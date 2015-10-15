@@ -101,6 +101,9 @@ class GameBoard(Frame):
             self.player = self.player3
             self.aiMover(self.player)
         elif player.getName() == 'Jax':
+            newloc = self.myRooms.roomCoords(randloc)
+            x = newloc[0]
+            y = newloc[1]
             self.w.delete(self.token3)
             self.token3 = self.w.create_text(x, y+40, fill = 'red', font = 15, text = 'Jax')
             self.text2.insert(END, '\nJax has moved to '+ player.getLocation())

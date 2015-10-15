@@ -31,7 +31,7 @@ class Rooms(object):
             'West Walkway':['Library','Rec Center','George Allen Field','North Hall'],
             'Computer Lab':['North Hall'],
             'ECS 302':['North Hall','South Hall'],
-            'EAT Club':['South Hall'],
+            'Eat Club':['South Hall'],
             'CECS Conference Room':['South Hall'],
             'Elevators':['North Hall','LA 5'],
             'North Hall':['West Walkway','Computer Lab','Room of Retirement','ECS 302','Elevators','South Hall'],
