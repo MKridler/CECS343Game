@@ -1,4 +1,4 @@
-
+from CSBSGame import *
 
 class Rooms(object):
     def __init__(self):
@@ -9,12 +9,12 @@ class Rooms(object):
         rooms = ['George Allen Field', 'Japanese Garden', 'Student Parking', 'The Pyramid', 'West Walkway',
                  'Rec Center', 'Forbidden Parking', 'Library', 'LA 5' , 'Bratwurst Hall', 'East Walkway',
         'Computer Lab', 'North Hall', 'Room of Retirement', 'ECS 302', 'South Hall', 'Elevators', 'ECS 308',
-                 'Eat Club', 'CECS Conference Room', 'Lactation Lounge']
+                 'EAT Club', 'CECS Conference Room', 'Lactation Lounge']
         return rooms
 
     def roomConnections(self, value):
         dict = {
-            'South Hall': ['ECS 302','Eat Club', 'CECS Conference Room', 'Lactation Lounge','ECS 308','East Walkway',
+            'South Hall': ['ECS 302','EAT Club', 'CECS Conference Room', 'Lactation Lounge','ECS 308','East Walkway',
                            'North Hall'],
             'ECS 308': ['South Hall'],
             'Lactation Lounge': ['South Hall'],
@@ -31,7 +31,7 @@ class Rooms(object):
             'West Walkway':['Library','Rec Center','George Allen Field','North Hall'],
             'Computer Lab':['North Hall'],
             'ECS 302':['North Hall','South Hall'],
-            'Eat Club':['South Hall'],
+            'EAT Club':['South Hall'],
             'CECS Conference Room':['South Hall'],
             'Elevators':['North Hall','LA 5'],
             'North Hall':['West Walkway','Computer Lab','Room of Retirement','ECS 302','Elevators','South Hall'],
@@ -41,26 +41,26 @@ class Rooms(object):
 
     def roomCoords(self, key):
         dict = {
-            'South Hall':  [840,1170],
-            'ECS 308':	[825,1350],
-            'Lactation Lounge': [1220,1350],
-            'George Allen Field':  [50,50],
-            'Japanese Garden':	[450,50],
-            'Pyramid':	[435,290],
-            'Rec Center':	[450,570],
-            'Student Parking':	[950,50],
-            'Forbidden Parking':	[1050,520],
-            'East Walkway':	[1470,1110],
-            'Bratwurst Hall':	[1090,1670],
-            'LA 5':		[480,1670],
-            'Library':		[50,1670],
-            'West Walkway':	[50,660],
-            'Computer Lab':	[190,900],
-            'ECS 302':		[620,900],
-            'Eat Club':		[1050,900],
-            'CECS Conference Room':[1260,900],
-            'Elevators':	[620,1350],
-            'North Hall':	[200,1170],
-            'Room of Retirement': [190,1350]
+            'South Hall':  [850,1170],
+            'ECS 308':	[850,1350],
+            'Lactation Lounge': [1230,1350],
+            'George Allen Field':  [60,50],
+            'Japanese Garden':	[460,50],
+            'Pyramid':	[445,290],
+            'Rec Center':	[460,570],
+            'Student Parking':	[960,50],
+            'Forbidden Parking':	[1060,520],
+            'East Walkway':	[1480,1110],
+            'Bratwurst Hall':	[1100,1670],
+            'LA 5':		[490,1670],
+            'Library':		[60,1670],
+            'West Walkway':	[60,660],
+            'Computer Lab':	[200,900],
+            'ECS 302':		[630,900],
+            'EAT Club':		[1060,900],
+            'CECS Conference Room':[1270,900],
+            'Elevators':	[630,1350],
+            'North Hall':	[210,1170],
+            'Room of Retirement': [200,1350]
         }
         return dict[key]
