@@ -1,8 +1,8 @@
 #from GameBoard import *
 #from Player import *
 from tkinter import *
-from CSBSGame import *
 import random
+from Player import Player
 root = Tk()
 root.geometry("{0}x{1}+0+0".format(root.winfo_screenwidth(), root.winfo_screenheight()))
 root.title('BSCS Challenge')

@@ -1,6 +1,6 @@
 __author__ = 'DarthMerl'
-from Deck import *
-from Player import *
+import Deck
+import Player
 
 class Card25(Deck, Player):
     def play(self, player):

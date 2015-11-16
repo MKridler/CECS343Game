@@ -1,10 +1,11 @@
-__author__ = 'DarthMerl'
-from Deck import *
-from Player import *
+from Deck import Deck
+from .Player import Player
+
 
 class Card15(Deck, Player):
+
     def play(self, player):
-        if player.getLocation() != 'Pyramid':
+        if player.location != 'Pyramid':
             player.setQP(-2)
             return False
         else:

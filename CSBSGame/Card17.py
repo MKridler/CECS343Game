@@ -1,13 +1,14 @@
-__author__ = 'DarthMerl'
-from Deck import *
-from Player import *
+from Deck import Deck
+from Player import Player
+
 
 class Card17(Deck, Player):
+
     def play(self, player):
-        if player.getLocation() != 'ECS 308' and player.getLocation() != 'ECS 302':
+        if player.location != 'ECS 308' and player.location != 'ECS 302':
             player.setQP(-2)
             return False
-        if player.getLearning() >= 5:
+        if player.learning >= 5:
             player.setQP(5)
             return False
         else:

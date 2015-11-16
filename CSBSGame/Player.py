@@ -1,5 +1,3 @@
-from CSBSGame import *
-
 class Player(object):
 
     def __init__(self, name, location, ai, QP, integrity, learning, craft):
@@ -51,4 +49,3 @@ class Player(object):
 
     def setAI(self, ai):
         self.ai = ai
-

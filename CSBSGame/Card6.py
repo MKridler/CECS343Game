@@ -1,10 +1,10 @@
-__author__ = 'DarthMerl'
-from Deck import *
-from Player import *
+from Deck import Deck
+from Player import Player
+
 
 class Card6(Deck, Player):
     def play(self, player):
-        if player.getLocation() != 'ECS 308':
+        if player.location != 'ECS 308':
             player.setQP(-2)
         else:
             player.setCraft(1)

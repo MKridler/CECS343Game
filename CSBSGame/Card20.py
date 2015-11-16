@@ -1,12 +1,13 @@
-__author__ = 'DarthMerl'
-from Deck import *
-from Player import *
+from Deck import Deck
+from Player import Player
+
 
 class Card20(Deck, Player):
+
     def play(self, player):
-        if player.getLocation() != 'George Allen Field':
+        if player.location != 'George Allen Field':
             player.setQP(-2)
-        if player.getCraft() >= 5:
+        if player.craft >= 5:
             player.setQP(5)
         else:
             player.setQP(-3)
