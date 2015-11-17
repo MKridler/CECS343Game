@@ -1,15 +1,15 @@
 from tkinter import *
 import tkinter.scrolledtext as tkst
-#from Player import *
-#from Rooms import *
+from Deck import Deck
+from Rooms import Rooms
+from Cards import *
 import random
-from __init__ import *
 
 
 class GameBoard(Frame):
     moveCounter = 0
 
-    def __init__(self,root,player1,player2, player3):
+    def __init__(self, root, player1, player2, player3):
         self.root = root
         self.player1 = player1
         self.player2 = player2
@@ -20,104 +20,145 @@ class GameBoard(Frame):
 
         if player1.getAI() == 1:
             self.player = player1
-            #self.hand(self.player)
+            # self.hand(self.player)
             self.hand = Deck()
             self.hand2 = self.hand.deal(5)
             #print(self.player.ai,self.player.name, 'player hand', self.hand2)
             self.playerlist = (self.player, self.player2, self.player3)
         elif player2.getAI() == 1:
             self.player = player2
-            #self.hand(self.player)
+            # self.hand(self.player)
             self.hand = Deck()
             self.hand2 = self.hand.deal(5)
             #print(self.player.ai,self.player.name, 'player hand', self.hand2)
             self.playerlist = (self.player, self.player1, self.player3)
         else:
             self.player = player3
-            #self.hand(self.player)
+            # self.hand(self.player)
             self.hand = Deck()
             self.hand2 = self.hand.deal(5)
             #print(self.player.ai,self.player.name, 'player hand', self.hand2)
             self.playerlist = (self.player, self.player1, self.player2)
 
-
-
-        #print(self.playerlist[0].getName())
-        #print(self.player.getName())
+        # print(self.playerlist[0].getName())
+        # print(self.player.getName())
         #self.create_board(root, player1, player2, player3)
         #self.buildMap(root, player1, player2, player3)
-        self.frame = Frame(root, height = adjheight, width = 100)
-        self.frame.pack(fill = BOTH, side = BOTTOM)
+        self.frame = Frame(root, height=adjheight, width=100)
+        self.frame.pack(fill=BOTH, side=BOTTOM)
         self.frame.propagate(False)
-        self.frame2 = Frame(self.frame,width = 100 )
-        self.frame2.pack(side = RIGHT, anchor = NE)
-
+        self.frame2 = Frame(self.frame, width=100)
+        self.frame2.pack(side=RIGHT, anchor=NE)
 
         self.pane = PanedWindow(self.frame)
-        self.pane.pack(anchor =NW)
+        self.pane.pack(anchor=NW)
 
-
-        self.b = Button(self.pane, width = 10, text = 'Draw Card',command = lambda : self.drawCard())
-        self.b.pack( pady = 5, anchor = W)
+        self.b = Button(
+            self.pane,
+            width=10,
+            text='Draw Card',
+            command=lambda: self.drawCard())
+        self.b.pack(pady=5, anchor=W)
 
         self.card = Canvas(self.pane)
         element = self.hand2[0]
         img = element[2]
 
-        self.photo = PhotoImage(file = img)
+        self.photo = PhotoImage(file=img)
         #self.card.background = PhotoImage(file= 'card1.gif')
-        self.card.create_image(50,0, anchor = NW, image = self.photo)
+        self.card.create_image(50, 0, anchor=NW, image=self.photo)
         self.card.bind("<Button-1>", self.changeCard)
-        self.card.pack(side = RIGHT)
-
-
+        self.card.pack(side=RIGHT)
 
         #self.scrollbarTB = Scrollbar(self.frame2)
         #self.scrollbarTB.pack(side = RIGHT)
-        self.text = Text(self.frame2,height = 8, width = 100)
-        self.text.pack(padx = 50, pady = 10,anchor =E,  )
-
+        self.text = Text(self.frame2, height=8, width=100)
+        self.text.pack(padx=50, pady=10, anchor=E,)
 
         self.stats(self.player1, self.player2, self.player3)
 
-        self.text2 = tkst.ScrolledText(self.frame2,height = 3, width = 98)
+        self.text2 = tkst.ScrolledText(self.frame2, height=3, width=98)
 
-        self.text2.pack(padx = 50, pady = 10, side = BOTTOM, anchor =SE)
+        self.text2.pack(padx=50, pady=10, side=BOTTOM, anchor=SE)
         #self.scrollbarTB.config(command = self.text2.yview)
         self.scrollbarLB = Scrollbar(self.pane)
-        self.scrollbarLB.pack(side = RIGHT)
-        self.lb1 = Listbox(self.pane, selectmode = EXTENDED, yscrollcommand = self.scrollbarLB.set)
-        self.text2.insert(END, '\n'+self.player.getName()+' is the user controlled player')
+        self.scrollbarLB.pack(side=RIGHT)
+        self.lb1 = Listbox(
+            self.pane,
+            selectmode=EXTENDED,
+            yscrollcommand=self.scrollbarLB.set)
+        self.text2.insert(
+            END,
+            '\n' +
+            self.player.getName() +
+            ' is the user controlled player')
 
-        self.scrollbarLB.config(command = self.lb1.yview)
+        self.scrollbarLB.config(command=self.lb1.yview)
 
-        self.b1 = Button(self.pane, width = 10,state = DISABLED, text = 'Move', command = lambda : self.runClick(self.player))
-        self.b1.pack(pady = 5, anchor = W)
+        self.b1 = Button(
+            self.pane,
+            width=10,
+            state=DISABLED,
+            text='Move',
+            command=lambda: self.runClick(
+                self.player))
+        self.b1.pack(pady=5, anchor=W)
 
         self.cardindex = element[1]
         #print('Main index',self.cardindex)
-        self.b2 = Button(self.pane, width = 10,state = DISABLED,text = 'Play Card',command = lambda : self.playCard(self.cardindex))
-        self.b2.pack(pady=5, anchor = W)
+        self.b2 = Button(
+            self.pane,
+            width=10,
+            state=DISABLED,
+            text='Play Card',
+            command=lambda: self.playCard(
+                self.cardindex))
+        self.b2.pack(pady=5, anchor=W)
 
         self.vscrollbar = Scrollbar(root)
-        self.vscrollbar.pack(side = RIGHT, fill = Y)
-        self.hscrollbar= Scrollbar(root, orient = HORIZONTAL)
-        self.hscrollbar.pack(side = BOTTOM, fill = X)
+        self.vscrollbar.pack(side=RIGHT, fill=Y)
+        self.hscrollbar = Scrollbar(root, orient=HORIZONTAL)
+        self.hscrollbar.pack(side=BOTTOM, fill=X)
 
-        self.w = Canvas(root, width = 1670, height = 2000,yscrollcommand = self.vscrollbar.set, xscrollcommand = self.hscrollbar.set)
-        self.w.config(scrollregion=(0,0,1670, 2000))
-        self.w.background = PhotoImage(file = 'CSULBMap3.gif')
-        self.w.create_image(0,0, anchor = NW, image=self.w.background)
+        self.w = Canvas(
+            root,
+            width=1670,
+            height=2000,
+            yscrollcommand=self.vscrollbar.set,
+            xscrollcommand=self.hscrollbar.set)
+        self.w.config(scrollregion=(0, 0, 1670, 2000))
+        self.w.background = PhotoImage(file='CSULBMap3.gif')
+        self.w.create_image(0, 0, anchor=NW, image=self.w.background)
 
-        self.token1 = self.w.create_text(850, 1350, fill = 'red', font =('Helvetica', 20), text = self.playerlist[0].getName())
-        self.token2 = self.w.create_text(850, 1390, fill = 'red', font =('Helvetica', 20), text = self.playerlist[1].getName())
-        self.token3 = self.w.create_text(850, 1430, fill = 'red', font =('Helvetica', 20), text = self.playerlist[2].getName())
+        self.token1 = self.w.create_text(
+            850,
+            1350,
+            fill='red',
+            font=(
+                'Helvetica',
+                20),
+            text = self.playerlist[0].getName())
+        self.token2 = self.w.create_text(
+            850,
+            1390,
+            fill='red',
+            font=(
+                'Helvetica',
+                20),
+            text = self.playerlist[1].getName())
+        self.token3 = self.w.create_text(
+            850,
+            1430,
+            fill='red',
+            font=(
+                'Helvetica',
+                20),
+            text = self.playerlist[2].getName())
 
-
-        self.vscrollbar.config(command = self.w.yview)
-        self.hscrollbar.config(command = self.w.xview)
+        self.vscrollbar.config(command=self.w.yview)
+        self.hscrollbar.config(command=self.w.xview)
         self.vscrollbar.pack()
-        self.w.pack(expand = YES, side = LEFT, fill = BOTH)
+        self.w.pack(expand=YES, side=LEFT, fill=BOTH)
         self.myRooms = Rooms()
 
         list1 = self.myRooms.roomConnections(player1.getLocation())
@@ -125,9 +166,9 @@ class GameBoard(Frame):
         for i in list1:
             self.lb1.insert(END, i)
 
-        self.lb1.pack(side = LEFT, anchor = SW)
+        self.lb1.pack(side=LEFT, anchor=SW)
 
-    def moves(self,player):
+    def moves(self, player):
 
         self.myRooms = Rooms()
         list1 = self.myRooms.roomConnections(player.getLocation())
@@ -135,19 +176,18 @@ class GameBoard(Frame):
         for i in list1:
             self.lb1.insert(END, i)
 
-    #def hand(self,player):
+    # def hand(self,player):
 
         #self.hand = Deck()
         #hand2 = self.hand.deal(5)
         #print(player.ai,player.name, 'player hand', hand2)
-
 
     def aiMover(self, player):
         print('AI working')
         #deck1 = Deck()
         #aiCard = deck1.aiDraw(player.getLocation())
         self.myRooms = Rooms()
-        #print(player.getLocation())
+        # print(player.getLocation())
         list1 = self.myRooms.roomConnections(player.getLocation())
         randloc = random.choice(list1)
         player.setLocation(randloc)
@@ -160,8 +200,20 @@ class GameBoard(Frame):
             aiCard = deck1.aiDraw(player.getLocation())
             self.cardindex = aiCard[1]
             self.w.delete(self.token2)
-            self.token2 = self.w.create_text(x, y+30, fill = 'red',font =('Helvetica', 20),text =  self.playerlist[1].getName())
-            self.text2.insert(END, '\n'+player.getName()+' has moved to '+ player.getLocation())
+            self.token2 = self.w.create_text(
+                x,
+                y+30,
+                fill='red',
+                font=(
+                    'Helvetica',
+                    20),
+                text = self.playerlist[1].getName())
+            self.text2.insert(
+                END,
+                '\n' +
+                player.getName() +
+                ' has moved to ' +
+                player.getLocation())
             self.playCard(self.cardindex)
             self.player = self.playerlist[2]
             self.stats(self.player1, self.player2, self.player3)
@@ -172,38 +224,57 @@ class GameBoard(Frame):
             aiCard = deck1.aiDraw(player.getLocation())
             self.cardindex = aiCard[1]
             self.w.delete(self.token3)
-            self.token3 = self.w.create_text(x, y+60, fill = 'red', font =('Helvetica', 20), text = self.playerlist[2].getName())
-            self.text2.insert(END, '\n'+player.getName()+' has moved to '+ player.getLocation())
+            self.token3 = self.w.create_text(
+                x,
+                y+60,
+                fill='red',
+                font=(
+                    'Helvetica',
+                    20),
+                text = self.playerlist[2].getName())
+            self.text2.insert(
+                END,
+                '\n' +
+                player.getName() +
+                ' has moved to ' +
+                player.getLocation())
             self.playCard(self.cardindex)
             deck1.discard(aiCard)
             self.player = self.playerlist[0]
             self.stats(self.player1, self.player2, self.player3)
             self.b['state'] = 'normal'
 
-    def runClick(self,player):
-      GameBoard.moveCounter
-      print(GameBoard.moveCounter)
-      if GameBoard.moveCounter <3:
-        items =self.lb1.curselection()
-        value= self.lb1.get(items[0])
+    def runClick(self, player):
+        GameBoard.moveCounter
+        print(GameBoard.moveCounter)
+        if GameBoard.moveCounter < 3:
+            items = self.lb1.curselection()
+            value = self.lb1.get(items[0])
 
-        player.setLocation(value)
-        newloc = self.myRooms.roomCoords(value)
-        x = newloc[0]
-        y = newloc[1]
+            player.setLocation(value)
+            newloc = self.myRooms.roomCoords(value)
+            x = newloc[0]
+            y = newloc[1]
 
-        self.lb1.delete(0, END)
+            self.lb1.delete(0, END)
 
-        self.w.delete(self.token1)
-        self.token1 = self.w.create_text(x, y, fill = 'red', font =('Helvetica', 20), text = self.playerlist[0].getName())
-        self.moves(self.player)
-        self.stats(self.player1, self.player2, self.player3)
-        GameBoard.moveCounter = GameBoard.moveCounter +1
-      if GameBoard.moveCounter == 3:
-        #self.player = self.playerlist[1]
-        self.b1['state'] = 'disabled'
-        #self.aiMover(self.player)
-        self.stats(self.player1, self.player2, self.player3)
+            self.w.delete(self.token1)
+            self.token1 = self.w.create_text(
+                x,
+                y,
+                fill='red',
+                font=(
+                    'Helvetica',
+                    20),
+                text = self.playerlist[0].getName())
+            self.moves(self.player)
+            self.stats(self.player1, self.player2, self.player3)
+            GameBoard.moveCounter = GameBoard.moveCounter + 1
+        if GameBoard.moveCounter == 3:
+            #self.player = self.playerlist[1]
+            self.b1['state'] = 'disabled'
+            # self.aiMover(self.player)
+            self.stats(self.player1, self.player2, self.player3)
 
     def teleport(self):
         self.lb1.delete(0, END)
@@ -211,14 +282,20 @@ class GameBoard(Frame):
         x = newloc[0]
         y = newloc[1]
         self.w.delete(self.token1)
-        self.token1 = self.w.create_text(x, y, fill = 'red', font =('Helvetica', 20), text = self.playerlist[0].getName())
+        self.token1 = self.w.create_text(
+            x,
+            y,
+            fill='red',
+            font=(
+                'Helvetica',
+                20),
+            text = self.playerlist[0].getName())
         self.moves(self.player)
         self.stats(self.player1, self.player2, self.player3)
 
-
-    def changeCard(self,arg):
+    def changeCard(self, arg):
         lstlen = len(self.hand2)
-        print('hand size: ',lstlen)
+        print('hand size: ', lstlen)
         element = self.hand2[0]
         print(element[2])
         img = element[2]
@@ -226,9 +303,9 @@ class GameBoard(Frame):
         print(self.cardindex)
         self.hand2.append(element)
         self.hand2.remove(self.hand2[0])
-        self.card.background = PhotoImage(file= img)
-        self.card.create_image(50,0, anchor = NW, image = self.card.background)
-        self.card.pack(side = RIGHT, fill = BOTH)
+        self.card.background = PhotoImage(file=img)
+        self.card.create_image(50, 0, anchor=NW, image=self.card.background)
+        self.card.pack(side=RIGHT, fill=BOTH)
         self.stats(self.player1, self.player2, self.player3)
 
     def drawCard(self):
@@ -239,9 +316,9 @@ class GameBoard(Frame):
         single = decks.draw()
         img = single[2]
         self.hand2.append(single)
-        self.card.background = PhotoImage(file= img)
-        self.card.create_image(50,0, anchor = NW, image = self.card.background)
-        self.card.pack(side = RIGHT, fill = BOTH)
+        self.card.background = PhotoImage(file=img)
+        self.card.create_image(50, 0, anchor=NW, image=self.card.background)
+        self.card.pack(side=RIGHT, fill=BOTH)
         self.stats(self.player1, self.player2, self.player3)
 
     def removeCard(self):
@@ -255,17 +332,17 @@ class GameBoard(Frame):
             element = self.hand2[0]
         img = element[2]
         self.hand2.remove(self.hand2[len(self.hand2)-1])
-        #print(self.hand2)
-        self.card.background = PhotoImage(file= img)
-        self.card.create_image(50,0, anchor = NW, image = self.card.background)
-        self.card.pack(side = RIGHT, fill = BOTH)
+        # print(self.hand2)
+        self.card.background = PhotoImage(file=img)
+        self.card.create_image(50, 0, anchor=NW, image=self.card.background)
+        self.card.pack(side=RIGHT, fill=BOTH)
         #self.stats(self.player1, self.player2, self.player3)
         if self.player.getAI() == 1:
             self.player = self.playerlist[1]
             self.aiMover(self.player)
 
     def playCard(self, index):
-        print('player AI: ',self.player.getAI())
+        print('player AI: ', self.player.getAI())
         self.b1['state'] = 'disabled'
         self.b2['state'] = 'disabled'
         if index == 1:
@@ -275,7 +352,6 @@ class GameBoard(Frame):
                 self.removeCard()
             print('removal complete')
             self.stats(self.player1, self.player2, self.player3)
-
 
         if index == 2:
             card1 = Card2()
@@ -351,7 +427,7 @@ class GameBoard(Frame):
                 self.removeCard()
             print('removal complete')
             print(result)
-            if result == False:
+            if not result:
                 self.removeCard()
             self.stats(self.player1, self.player2, self.player3)
 
@@ -377,7 +453,7 @@ class GameBoard(Frame):
             if self.player.getAI() == 1:
                 self.removeCard()
             print('removal complete')
-            if result == True:
+            if result:
                 self.teleport()
                 print('Teleporting')
             self.stats(self.player1, self.player2, self.player3)
@@ -396,7 +472,7 @@ class GameBoard(Frame):
             if self.player.getAI() == 1:
                 self.removeCard()
             print('removal complete')
-            if result == True:
+            if result:
                 self.teleport()
                 print('Teleporting')
             self.stats(self.player1, self.player2, self.player3)
@@ -407,7 +483,7 @@ class GameBoard(Frame):
             if self.player.getAI() == 1:
                 self.removeCard()
             print('removal complete')
-            if result == True:
+            if result:
                 self.teleport()
                 print('Teleporting')
             self.stats(self.player1, self.player2, self.player3)
@@ -418,7 +494,7 @@ class GameBoard(Frame):
             if self.player.getAI() == 1:
                 self.removeCard()
             print('removal complete')
-            if result == True:
+            if result:
                 self.removeCard()
             self.stats(self.player1, self.player2, self.player3)
 
@@ -429,7 +505,6 @@ class GameBoard(Frame):
                 self.removeCard()
             print('removal complete')
             self.stats(self.player1, self.player2, self.player3)
-
 
         if index == 19:
             card1 = Card19()
@@ -453,7 +528,7 @@ class GameBoard(Frame):
             if self.player.getAI() == 1:
                 self.removeCard()
             print('removal complete')
-            if result == True:
+            if result:
                 self.teleport()
                 print('Teleporting')
             self.stats(self.player1, self.player2, self.player3)
@@ -464,7 +539,7 @@ class GameBoard(Frame):
             if self.player.getAI() == 1:
                 self.removeCard()
             print('removal complete')
-            if result == True:
+            if result:
                 self.teleport()
                 print('Teleporting')
             self.stats(self.player1, self.player2, self.player3)
@@ -475,7 +550,7 @@ class GameBoard(Frame):
             if self.player.getAI() == 1:
                 self.removeCard()
             print('removal complete')
-            if result == True:
+            if result:
                 self.teleport()
                 print('Teleporting')
             self.stats(self.player1, self.player2, self.player3)
@@ -486,7 +561,7 @@ class GameBoard(Frame):
             if self.player.getAI() == 1:
                 self.removeCard()
             print('removal complete')
-            if result == True:
+            if result:
                 self.removeCard()
             self.stats(self.player1, self.player2, self.player3)
 
@@ -517,7 +592,7 @@ class GameBoard(Frame):
             if self.player.getAI() == 1:
                 self.removeCard()
             print('removal complete')
-            if result == True:
+            if result:
                 if self.player.getAI() == 1:
                     self.removeCard()
             self.stats(self.player1, self.player2, self.player3)
@@ -528,7 +603,7 @@ class GameBoard(Frame):
             if self.player.getAI() == 1:
                 self.removeCard()
             print('removal complete')
-            if result == True:
+            if result:
                 if self.player.getAI() == 1:
                     self.removeCard()
             self.stats(self.player1, self.player2, self.player3)
@@ -562,7 +637,7 @@ class GameBoard(Frame):
             if self.player.getAI() == 1:
                 self.removeCard()
             print('removal complete')
-            if result == True:
+            if result:
                 if self.player.getAI() == 1:
                     self.drawCard()
             self.stats(self.player1, self.player2, self.player3)
@@ -573,7 +648,7 @@ class GameBoard(Frame):
             if self.player.getAI() == 1:
                 self.removeCard()
             print('removal complete')
-            if result == True:
+            if result:
                 if self.player.getAI() == 1:
                     self.removeCard()
             self.stats(self.player1, self.player2, self.player3)
@@ -599,7 +674,7 @@ class GameBoard(Frame):
             if self.player.getAI() == 1:
                 self.removeCard()
             print('removal complete')
-            if result == True:
+            if result:
                 self.teleport()
                 print('Teleporting')
             self.stats(self.player1, self.player2, self.player3)
@@ -626,7 +701,7 @@ class GameBoard(Frame):
             if self.player.getAI() == 1:
                 self.removeCard()
             print('removal complete')
-            if result == True:
+            if result:
                 if self.player.getAI() == 1:
                     self.removeCard()
             self.stats(self.player1, self.player2, self.player3)
@@ -637,7 +712,7 @@ class GameBoard(Frame):
             if self.player.getAI() == 1:
                 self.removeCard()
             print('removal complete')
-            if result == True:
+            if result:
                 self.teleport()
                 print('Teleporting')
             self.stats(self.player1, self.player2, self.player3)
@@ -648,7 +723,7 @@ class GameBoard(Frame):
             if self.player.getAI() == 1:
                 self.removeCard()
             print('removal complete')
-            if result == True:
+            if result:
                 self.teleport()
                 print('Teleporting')
             self.stats(self.player1, self.player2, self.player3)
@@ -658,10 +733,49 @@ class GameBoard(Frame):
         decks = Deck()
         size = decks.getDeckSize()
         discard = decks.getDiscardSize()
-        #print(player1.getName())
-        self.text.insert(INSERT, "          Learning    Crafts  Integrity   Quality Points")
-        self.text.insert(INSERT, " \n" + player1.getName() + "        "+str(player1.getLearning()) + "          " + str(player1.getCraft()) + "          " + str(player1.getIntegrity()) + "             "+ str(player1.getQP()))
-        self.text.insert(INSERT, " \n" + player2.getName() + "        "+str(player2.getLearning()) + "          " + str(player2.getCraft()) + "          " + str(player2.getIntegrity()) + "             "+ str(player2.getQP()))
-        self.text.insert(INSERT, " \n" + player3.getName() + "        "+str(player3.getLearning()) + "          " + str(player3.getCraft()) + "          " + str(player3.getIntegrity()) + "             "+ str(player3.getQP()))
-        self.text.insert(INSERT, " \n \nCards in Deck " + str(size)+ "       Cards in Discard Deck: "+ str(discard))
-        self.text.insert(INSERT, " \nCurrent Player: "+ self.player.getName() +" located at "+ self.player.getLocation())
+        # print(player1.getName())
+        self.text.insert(
+            INSERT,
+            "          Learning    Crafts  Integrity   Quality Points")
+        self.text.insert(INSERT, " \n" +
+                         player1.getName() +
+                         "        " +
+                         str(player1.getLearning()) +
+                         "          " +
+                         str(player1.getCraft()) +
+                         "          " +
+                         str(player1.getIntegrity()) +
+                         "             " +
+                         str(player1.getQP()))
+        self.text.insert(INSERT, " \n" +
+                         player2.getName() +
+                         "        " +
+                         str(player2.getLearning()) +
+                         "          " +
+                         str(player2.getCraft()) +
+                         "          " +
+                         str(player2.getIntegrity()) +
+                         "             " +
+                         str(player2.getQP()))
+        self.text.insert(INSERT, " \n" +
+                         player3.getName() +
+                         "        " +
+                         str(player3.getLearning()) +
+                         "          " +
+                         str(player3.getCraft()) +
+                         "          " +
+                         str(player3.getIntegrity()) +
+                         "             " +
+                         str(player3.getQP()))
+        self.text.insert(
+            INSERT,
+            " \n \nCards in Deck " +
+            str(size) +
+            "       Cards in Discard Deck: " +
+            str(discard))
+        self.text.insert(
+            INSERT,
+            " \nCurrent Player: " +
+            self.player.getName() +
+            " located at " +
+            self.player.getLocation())

@@ -1,5 +1,3 @@
-from CSBSGame import *
-
 class Rooms(object):
     def __init__(self):
         self.data = []
