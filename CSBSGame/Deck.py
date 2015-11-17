@@ -63,8 +63,9 @@ class Deck(object):
 
     def getDeckSize(self):
         #print('Getter: ',self.deckSize)
-        global activeDeck
-        return len(activeDeck)
+        Deck.activeDeck
+        return len(Deck.activeDeck)
+
 
     def deal(self,value):
        #self.deck()
@@ -76,31 +77,39 @@ class Deck(object):
           self.data2.remove(self.data2[i])
           #print(self.data2)
        #print('here',hand)
-       print('Decksize: ',len(self.data2))
-       global activeDeck
-       activeDeck = self.data2
-       global decksize
-       decksize = (len(self.data2))
-       global discardDeck
-       discardDeck = []
-       print (decksize)
+       #print('Decksize: ',len(self.data2))
+
+       Deck.activeDeck = self.data2
+       Deck.decksize = (len(self.data2))
+
+       Deck.discardDeck = []
+       #print (decksize)
        return hand
 
     def draw(self):
-        global activeDeck
-        random.shuffle(activeDeck)
-        single = activeDeck[0]
-        activeDeck.remove(activeDeck[0])
+
+        random.shuffle(Deck.activeDeck)
+        single = Deck.activeDeck[0]
+        Deck.activeDeck.remove(Deck.activeDeck[0])
         return single
 
+    def aiDraw(self,location):
+        for i in range(len(Deck.activeDeck)):
+            element = Deck.activeDeck[i]
+            if element[2] == location:
+                return element
+            elif i == (len(Deck.activeDeck)-1):
+                return element
+
+
     def discard(self, card):
-       global discardDeck
-       discardDeck.append(card)
+       #global discardDeck
+       Deck.discardDeck.append(card)
        #return len(discardDeck)
 
     def getDiscardSize(self):
-        global discardDeck
-        return len(discardDeck)
+        #global discardDeck
+        return len(Deck.discardDeck)
 
     def play(self):
         pass
