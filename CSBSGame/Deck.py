@@ -64,6 +64,9 @@ class Deck(object):
     def getDeckSize(self):
         #print('Getter: ',self.deckSize)
         Deck.activeDeck
+        if Deck.activeDeck == 0:
+            Deck.activeDeck = Deck.discardDeck
+            random.shuffle(Deck.activeDeck)
         return len(Deck.activeDeck)
 
 
@@ -97,8 +100,10 @@ class Deck(object):
         for i in range(len(Deck.activeDeck)):
             element = Deck.activeDeck[i]
             if element[2] == location:
+                Deck.activeDeck.remove(Deck.activeDeck[i])
                 return element
             elif i == (len(Deck.activeDeck)-1):
+                Deck.activeDeck.remove(Deck.activeDeck[i])
                 return element
 
 
@@ -114,5 +119,3 @@ class Deck(object):
     def play(self):
         pass
 
-#a = Deck()
-#a.deal
