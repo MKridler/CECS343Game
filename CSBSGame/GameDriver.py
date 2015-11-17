@@ -9,9 +9,9 @@ root.geometry(
     "{0}x{1}+0+0".format(root.winfo_screenwidth(), root.winfo_screenheight()))
 root.title('BSCS Challenge')
 
-player1 = Player('Donny', 'ECS 308', 0, 0, 0, 0, 0)
-player2 = Player('Izzy ', 'ECS 308', 0, 0, 0, 0, 0)
-player3 = Player('Jax  ', 'ECS 308', 0, 0, 0, 0, 0)
+player1 = Player('Donny', 'ECS 308', 0, 0, 2, 2, 2)
+player2 = Player('Izzy ', 'ECS 308', 0, 0, 2, 3, 1)
+player3 = Player('Jax  ', 'ECS 308', 0, 0, 3, 0, 3)
 playerlist = ['player1', 'player2', 'player3']
 
 randUser = random.choice(playerlist)

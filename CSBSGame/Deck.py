@@ -1,5 +1,4 @@
 import random
-from Cards import *
 
 class Deck(object):
     decksize = 0
